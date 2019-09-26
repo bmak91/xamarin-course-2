@@ -34,9 +34,9 @@ namespace App2.Views
                 return;
 
             //await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
-            await Shell.Current.GoToAsync($"//items/details?title={item.Text}", true);
+            await Shell.Current.GoToAsync($"//items/details?title={item.Text}&description={item.Description}", true);
 
-            // Manually deselect item.
+            // Manually deselect item. 
             ItemsListView.SelectedItem = null;
         }
 
