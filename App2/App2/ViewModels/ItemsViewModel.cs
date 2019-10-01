@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
 using App2.Models;
 using App2.Views;
+using Newtonsoft.Json;
 
 namespace App2.ViewModels
 {
@@ -29,6 +32,12 @@ namespace App2.ViewModels
             });
         }
 
+        public class Todo
+        {
+            public string Title { get; set; }
+            public bool Completed { get; set; }
+        }
+
         async Task ExecuteLoadItemsCommand()
         {
             if (IsBusy)
@@ -39,10 +48,26 @@ namespace App2.ViewModels
             try
             {
                 Items.Clear();
-                var items = await DataStore.GetItemsAsync(true);
-                foreach (var item in items)
+                // var items = await DataStore.GetItemsAsync(true);
+                using (var httpClient = new HttpClient
                 {
-                    Items.Add(item);
+                    BaseAddress = new Uri("https://jsonplaceholder.typicode.com")
+                })
+                {
+                    var response = await httpClient.GetAsync("/todos");
+                    // "{\"Property\": \"Value\"}"
+                    var json = await response.Content.ReadAsStringAsync();
+                    var todos = JsonConvert.DeserializeObject<List<Todo>>(json);
+
+                    foreach (var todo in todos)
+                    {
+                        Items.Add(new Item
+                        {
+                            Text = todo.Title,
+                            Description = todo.Completed 
+                                ? "Completed" : "Not Completed"
+                        });
+                    }
                 }
             }
             catch (Exception ex)
