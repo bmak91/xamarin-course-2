@@ -14,6 +14,7 @@ namespace App2
             InitializeComponent();
 
             DependencyService.Register<MockDataStore>();
+            DependencyService.Register<IBooksService, BooksService>();
             MainPage = new AppShell();
         }
 

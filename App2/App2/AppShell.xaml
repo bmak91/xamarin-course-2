@@ -12,6 +12,9 @@
     <FlyoutItem Shell.TabBarIsVisible="False" 
                 FlyoutDisplayOptions="AsMultipleItems"
                 >
+        <Tab Title="Library">
+            <ShellContent Route="books" ContentTemplate="{DataTemplate local:LibraryPage}" />
+        </Tab>
         <Tab Title="Browse">
             <ShellContent Route="items" ContentTemplate="{DataTemplate local:ItemsPage}" />
         </Tab>
