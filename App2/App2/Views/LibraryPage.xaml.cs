@@ -12,14 +12,26 @@ namespace App2.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LibraryPage : ContentPage
     {
+        private LibraryViewModel VM { get; set; }
         public LibraryPage()
         {
             InitializeComponent();
 
-            var vm = new LibraryViewModel();
-            BindingContext = vm;
+            VM = new LibraryViewModel((selectedBook) =>
+            {
+                Navigation.PushAsync(new ContentPage()
+                {
 
-            vm.LoadData();
+                });
+            });
+            BindingContext = VM;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            VM.LoadData(true);
         }
     }
 }

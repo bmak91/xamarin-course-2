@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using App2.Models;
 
@@ -25,7 +26,11 @@ namespace App2.Services
             new Book(6){ Title = "Book 6", Author = new Author("Good", "Author")},
         };
 
-        public Task<List<Book>> GetBooks() => Task.FromResult(books);
+        public async Task<List<Book>> GetBooks()
+        {
+            await Task.Run(() => Thread.Sleep(3000));
+            return books;
+        }
 
         public Task<Book> GetBookById(int id) => 
             Task.FromResult(books.FirstOrDefault(b => b.Id == id));
